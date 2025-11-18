@@ -6,6 +6,9 @@ const mobileControls = document.getElementById("mobile-controls");
 const leftButton = document.getElementById("left-button");
 const rightButton = document.getElementById("right-button");
 
+const SPEED_INCREASE_FACTOR = 1.05; // Aumenta a velocidade em 5% a cada acerto (Exemplo)
+const MAX_SPEED = 10; // Limite máximo para a velocidade da bola
+
 let gameLoopId;
 let lives = 3;
 let score = 0;
@@ -46,8 +49,8 @@ const paddle = {
 // --- Objeto Bola (Ball) ---
 const ballDefaults = {
     radius: 6, // Um pouco maior
-    dx: 2,
-    dy: -2,
+    dx: 3,
+    dy: -3,
     // Cor base, o gradiente será gerado dinamicamente
     colorLight: "#e74c3c",
     colorDark: "#c0392b"
