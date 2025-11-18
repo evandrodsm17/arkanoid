@@ -46,8 +46,8 @@ const paddle = {
 // --- Objeto Bola (Ball) ---
 const ballDefaults = {
     radius: 6, // Um pouco maior
-    dx: 3,
-    dy: -3,
+    dx: 2,
+    dy: -2,
     // Cor base, o gradiente será gerado dinamicamente
     colorLight: "#e74c3c",
     colorDark: "#c0392b"
