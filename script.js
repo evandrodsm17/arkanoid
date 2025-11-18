@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 const startButton = document.getElementById("start-button");
 const mobileControls = document.getElementById("mobile-controls");
 const leftButton = document.getElementById("left-button");
-const rightButton = document.getElementById("right-button");
+const rightButton = document.getElementById("rightButton");
 
 const SPEED_INCREASE_FACTOR = 1.05; // Aumenta a velocidade em 5% a cada acerto (Exemplo)
 const MAX_SPEED = 10; // Limite máximo para a velocidade da bola
@@ -268,7 +268,7 @@ function drawInfo() {
     ctx.fillText("Lives: " + lives, canvas.width - 10, 25);
 }
 
-// --- Funções de Movimento e Colisão (sem alterações significativas) ---
+// --- Funções de Movimento e Colisão ---
 
 function movePaddle() {
     if (paddle.movingRight && paddle.x < canvas.width - paddle.width) {
@@ -311,12 +311,30 @@ function moveBall(b) {
         return;
     }
 
+    // Colisão com a paleta (Paddle)
     if (b.y + b.radius > canvas.height - paddle.height - 10 &&
         b.y + b.radius < canvas.height - 10 + b.radius / 2 &&
         b.x > paddle.x &&
         b.x < paddle.x + paddle.width) {
 
-        b.dy = -b.dy;
+        b.dy = -b.dy; // Inverte Y
+
+        // --- Lógica de Aceleração da Velocidade ---
+        
+        // 1. Aumenta a velocidade (dx e dy)
+        b.dx *= SPEED_INCREASE_FACTOR;
+        b.dy *= SPEED_INCREASE_FACTOR; 
+        
+        // 2. Limita a velocidade máxima
+        const currentSpeed = Math.sqrt(b.dx * b.dx + b.dy * b.dy);
+        if (currentSpeed > MAX_SPEED) {
+             // Se ultrapassar o limite, normaliza a velocidade para o MAX_SPEED
+             const ratio = MAX_SPEED / currentSpeed;
+             b.dx *= ratio;
+             b.dy *= ratio;
+        }
+
+        // 3. Adiciona um ângulo ao rebote (mantido)
         const relativeIntersectX = (paddle.x + (paddle.width / 2)) - b.x;
         const normalizedRelativeIntersectionX = (relativeIntersectX / (paddle.width / 2));
         b.dx = normalizedRelativeIntersectionX * -ballDefaults.dx * 1.5;
